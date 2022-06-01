@@ -1,0 +1,91 @@
+{
+    "name": "Feed and query test",
+    "defaults": {
+        "cluster": "default",
+        "parameters": {
+            "timeout": "2s"
+        }
+    },
+    "steps": [
+        {
+            "name": "feed single vector",
+            "request": {
+                "method": "POST",
+                "uri": "/document/v1/vector-search/vector/docid/0",
+                "body": "../vector-feed.json"
+            }
+        },
+        {
+            "name": "query tags",
+            "request": {
+                "method": "POST",
+                "uri": "/search/",
+                "body": "../vector-query.json",
+                "parameters": {
+                    "yql": "select * from vector where tags contains \"foo:bar\""
+                }
+            },
+            "response": {
+                "body": {
+                    "root": {
+                        "children": [
+                            {
+                                "fields": {
+                                    "id": "0"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "query vector ",
+            "request": {
+                "method": "POST",
+                "uri": "/search/",
+                "body": "../vector-query.json",
+                "parameters": {
+                    "yql": "select * from vectors where {targetHits:10}nearestNeighbor(vector,q)"
+                }
+            },
+            "response": {
+                "body": {
+                    "root": {
+                        "children": [
+                            {
+                                "fields": {
+                                    "id": "0"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "query vector and tags combined",
+            "request": {
+                "method": "POST",
+                "uri": "/search/",
+                "body": "../vector-query.json",
+                "parameters": {
+                    "yql": "select * from vectors where {targetHits:10}nearestNeighbor(vector,q) and tags contains \"foo:bar\""
+                }
+            },
+            "response": {
+                "body": {
+                    "root": {
+                        "children": [
+                            {
+                                "fields": {
+                                    "id": "0"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

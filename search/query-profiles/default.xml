@@ -1,0 +1,5 @@
+<query-profile id="default">
+  <field name="presentation.timing">true</field>
+  <field name="presentation.format.tensors">short</field>
+  <field name="presentation.summary">mini</field>
+</query-profile>

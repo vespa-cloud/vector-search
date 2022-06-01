@@ -1,0 +1,47 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema vector {
+
+  document vector {
+
+    field id type string {
+      indexing: summary | attribute
+      attribute: fast-search
+      rank: filter
+    } 
+
+    field tags type array<string> {
+      indexing: summary | attribute
+      attribute: fast-search
+      rank: filter
+    }
+
+    field vector type tensor<float>(d[768]) {
+      indexing: summary | attribute | index
+      attribute {
+        distance-metric: euclidean  
+      }
+    }
+  }
+
+  document-summary mini {
+    summary id type string {source:id}  
+    summary tags type array<string> { source: tags }  
+  }
+
+  document-summary all {
+    summary id type string {source:id}  
+    summary tags type array<string> { source: tags } 
+    summary vector type tensor<float>(d[768]) { source: vector }
+  }
+
+  rank-profile default {
+    inputs {
+      query(q) tensor<float>(d[768])
+    } 
+    first-phase {
+      expression: closeness(field, vector)
+    }
+    match-features: distance(field, vector) 
+  }
+
+} 

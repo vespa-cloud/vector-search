@@ -1,0 +1,20 @@
+{
+    "name": "Staging bootstrap",
+    "comment": "This feeds documents using the Vespa version which is in production",
+    "defaults": {
+        "cluster": "default",
+        "parameters": {
+            "timeout": "2s"
+        }
+    },
+    "steps": [
+        {
+            "name": "feed single vector",
+            "request": {
+                "method": "POST",
+                "uri": "/document/v1/vector-search/vector/docid/0",
+                "body": "../vector-feed.json"
+            }
+        }
+    ]
+}
