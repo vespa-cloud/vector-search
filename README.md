@@ -1,5 +1,5 @@
 <!-- Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.-->
-![Vespa logo](https://vespa.ai/assets/vespa-logo-color.png)
+![Vespa Cloud logo](https://cloud.vespa.ai/assets/logos/vespa-cloud-logo-full-black.png)
 
 # Managed Vector Search using Vespa Cloud
 
@@ -18,7 +18,7 @@ git clone --depth 1 git@github.com:vespa-cloud/vector-search.git && cd vector-se
 
 ## Install Vespa-CLI
 Install the [Vespa-CLI](https://docs.vespa.ai/en/vespa-cli.html) which is the official command-line
-client for interacting with Vespa. 
+client for interacting with Vespa:
 
 <pre>
 brew install vespa-cli 
@@ -29,8 +29,7 @@ for Windows, Linux and macOS.
 
 ## Configure Vespa-CLI 
 Replace `<tenant-name>` with your Vespa Cloud tenant name. 
-In this case, the application name used is `vector-search` and instance
-is `default`.
+In this case, the application name used is `vector-search` and instance is `default`:
 
 <pre>
 vespa config set target cloud && vespa config set application &lt;tenant-name&gt;.vector-search.default
@@ -53,7 +52,7 @@ in the [Vespa Cloud Security Guide](https://cloud.vespa.ai/en/security/guide).
 
 ## Configure Vector Schema 
 Now the app is ready to be deployed. The [vector schema](schemas/vector.sd)
-is configured with `768` dimension using `float` precision. 
+is configured with `768` dimensions using `float` precision. 
 
 The [vector schema](schemas/vector.sd) could be changed before deploying 
 to match your vector data:
@@ -65,10 +64,11 @@ to match your vector data:
 
 
 ## Deploy to dev environment 
-Vespa Cloud supports multiple different [environments](https://cloud.vespa.ai/en/reference/environments) and
-the following guides you through the process of deploying to `dev` for developing and testing
-of your vector search use case, to deploying to `perf` for performance validation and benchmarking, and finally to
-`prod` for high availability production serving. 
+Vespa Cloud supports multiple different [environments](https://cloud.vespa.ai/en/reference/environments).
+The following guides you through:
+* Deploying to `dev` for developing and testing of your vector search use case
+* Deploying to `perf` for performance validation and benchmarking
+* Deploying to `prod` for high availability production serving
 
 Dev zone is where development happens, resources are downscaled to nodes with 2 v-cpu, 8GB of RAM and 50 GB of disk.
 A single node `dev` deployment can index up to about 1M 768 dimensional vectors. 
@@ -87,7 +87,7 @@ The perf zone is used for [benchmarking](https://cloud.vespa.ai/en/benchmarking)
 It uses the same resource specification as in production, except
 for redundancy. 
 
-Deploy app to `perf` by using the `--zone` parameter
+Deploy app to `perf` by using the `--zone` parameter:
 
 <pre>
 vespa deploy --zone perf.aws-us-east-1c
@@ -130,7 +130,7 @@ All customers receive all features and services, and is charged a fee proportion
 
 The production env configuration in [services.xml](services.xml) specifies the following resources:
 <pre>
- &lt;nodes deploy:environment="prod" count="2" groups="2"&gt;
+&lt;nodes deploy:environment="prod" count="2" groups="2"&gt;
       &lt;resources memory="32GB" vcpu="8" disk="300GB" storage-type="local"&gt;
 &lt;/nodes&gt;
 </pre>
@@ -157,7 +157,7 @@ Vespa Cloud also supports [auto-scaling](https://cloud.vespa.ai/en/autoscaling),
 number of groups (replicas) to handle query traffic changes.
 
 <pre>
- &lt;nodes deploy:environment="prod" count="[2,4]" groups="[2,4]"&gt;
+&lt;nodes deploy:environment="prod" count="[2,4]" groups="[2,4]"&gt;
       &lt;resources memory="512GB" vcpu="64" disk="2400GB" storage-type="local"&gt;
 &lt;/nodes&gt;
 </pre>
