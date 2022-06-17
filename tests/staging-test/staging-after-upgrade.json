@@ -1,0 +1,83 @@
+{
+    "name": "Staging test running after change applied, including Vespa upgrade",
+    "defaults": {
+        "cluster": "default",
+        "parameters": {
+            "timeout": "2s"
+        }
+    },
+    "steps": [
+        {
+            "name": "query tags",
+            "request": {
+                "method": "POST",
+                "uri": "/search/",
+                "body": "../vector-query.json",
+                "parameters": {
+                    "yql": "select * from vector where tags contains \"foo:bar\""
+                }
+            },
+            "response": {
+                "body": {
+                    "root": {
+                        "children": [
+                            {
+                                "fields": {
+                                    "id": "0"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "query vector ",
+            "request": {
+                "method": "POST",
+                "uri": "/search/",
+                "body": "../vector-query.json",
+                "parameters": {
+                    "yql": "select * from vectors where {targetHits:10}nearestNeighbor(vector,q)"
+                }
+            },
+            "response": {
+                "body": {
+                    "root": {
+                        "children": [
+                            {
+                                "fields": {
+                                    "id": "0"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "query vector and tags combined",
+            "request": {
+                "method": "POST",
+                "uri": "/search/",
+                "body": "../vector-query.json",
+                "parameters": {
+                    "yql": "select * from vectors where {targetHits:10}nearestNeighbor(vector,q) and tags contains \"foo:bar\""
+                }
+            },
+            "response": {
+                "body": {
+                    "root": {
+                        "children": [
+                            {
+                                "fields": {
+                                    "id": "0"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
