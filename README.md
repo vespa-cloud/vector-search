@@ -25,7 +25,7 @@ brew install vespa-cli
 </pre>
 
 You can also download [Vespa CLI](https://github.com/vespa-engine/vespa/releases) 
-for Windows, Linux and macOS.vespa config set target cloud && vespa config --local set application <tenant-name>.vector-search.default
+for Windows, Linux and macOS.
 
 ## Configure Vespa-CLI 
 Replace `<tenant-name>` with your Vespa Cloud tenant name. 
