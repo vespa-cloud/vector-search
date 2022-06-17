@@ -32,7 +32,8 @@ Replace `<tenant-name>` with your Vespa Cloud tenant name.
 In this case, the application name used is `vector-search` and instance is `default`:
 
 ```sh
-vespa config set target cloud && vespa config set --local application &lt;tenant-name&gt;.vector-search.default
+vespa config set target cloud && \
+ vespa config set --local application <tenant-name>.vector-search.default
 ```
 
 ## Security
