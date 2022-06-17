@@ -12,17 +12,17 @@ Onboarding Vespa Cloud will start your [free trial](https://cloud.vespa.ai/prici
 no credit card required. 
 
 ## Clone this repo 
-<pre>
+```sh
 git clone --depth 1 https://github.com/vespa-cloud/vector-search.git && cd vector-search
-</pre>
+```
 
 ## Install Vespa-CLI
 Install the [Vespa-CLI](https://docs.vespa.ai/en/vespa-cli.html) which is the official command-line
 client for interacting with Vespa:
 
-<pre>
+```sh
 brew install vespa-cli 
-</pre>
+```
 
 You can also download [Vespa CLI](https://github.com/vespa-engine/vespa/releases) 
 for Windows, Linux and macOS.
@@ -31,21 +31,21 @@ for Windows, Linux and macOS.
 Replace `<tenant-name>` with your Vespa Cloud tenant name. 
 In this case, the application name used is `vector-search` and instance is `default`:
 
-<pre>
+```sh
 vespa config set target cloud && vespa config set --local application &lt;tenant-name&gt;.vector-search.default
-</pre>
+```
 
 ## Security
 
 Authorize access to Vespa Cloud control plane: 
-<pre>
+```sh
 vespa auth login
-</pre>
+```
 
 Create a self-signed certificate for data plane (read and write) access:
-<pre>
+```sh
 vespa auth cert
-</pre>
+```
 
 Read more about how Vespa Cloud keeps your data safe and private at rest and in transit 
 in the [Vespa Cloud Security Guide](https://cloud.vespa.ai/en/security/guide).
@@ -74,9 +74,9 @@ Dev zone is where development happens, resources are downscaled to nodes with 2 
 A single node `dev` deployment can index up to about 1M 768 dimensional vectors. 
 
 Deploy app to `dev`:
-<pre>
+```sh
 vespa deploy  
-</pre>
+```
 
 The first deployment to dev environment takes about 12 minutes for provisioning resources and 
 setting up certificates. 
@@ -89,9 +89,9 @@ for redundancy.
 
 Deploy app to `perf` by using the `--zone` parameter:
 
-<pre>
+```sh
 vespa deploy --zone perf.aws-us-east-1c
-</pre>
+```
 
 
 ## Deploy to production environment
@@ -117,9 +117,9 @@ listed in [zones](https://cloud.vespa.ai/en/reference/zones.html).
 Request for new regions can be made by sending an email to [support@vespa.ai](mailto:support@vespa.ai).
 
 The following deploys the application to the production regions specified in [deployment.xml](deployment.xml):
-<pre>
+```sh
 vespa prod submit 
-</pre>
+```
 
 We recommend deploying using CI/CD, for example deploying to Vespa Cloud using GitHub Actions.  
 
@@ -129,11 +129,11 @@ We recommend deploying using CI/CD, for example deploying to Vespa Cloud using G
 All customers receive all features and services, and is charged a fee proportional to the resources the application uses. 
 
 The production env configuration in [services.xml](services.xml) specifies the following resources:
-<pre>
-&lt;nodes deploy:environment="prod" count="2" groups="2"&gt;
-      &lt;resources memory="32GB" vcpu="8" disk="300GB" storage-type="local"&gt;
-&lt;/nodes&gt;
-</pre>
+```xml
+<nodes deploy:environment="prod" count="2" groups="2">
+      <resources memory="32GB" vcpu="8" disk="300GB" storage-type="local" />
+</nodes>
+```
 
 Above specifies a redundant high availability deployment 
 using [grouped data distribution](https://docs.vespa.ai/en/performance/sizing-search.html ) with
@@ -156,11 +156,11 @@ use case. Sizing and cost estimation uses samples of your data using the `perf` 
 Vespa Cloud also supports [auto-scaling](https://cloud.vespa.ai/en/autoscaling), in this example scaling 
 number of groups (replicas) to handle query traffic changes.
 
-<pre>
-&lt;nodes deploy:environment="prod" count="[2,4]" groups="[2,4]"&gt;
-      &lt;resources memory="512GB" vcpu="64" disk="2400GB" storage-type="local"&gt;
-&lt;/nodes&gt;
-</pre>
+```xml
+<nodes deploy:environment="prod" count="[2,4]" groups="[2,4]">
+      <resources memory="512GB" vcpu="64" disk="2400GB" storage-type="local" />
+</nodes>
+```
 
 
 ## Using Vespa Vector Search 
