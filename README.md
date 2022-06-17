@@ -13,7 +13,7 @@ no credit card required.
 
 ## Clone this repo 
 <pre>
-git clone --depth 1 git@github.com:vespa-cloud/vector-search.git && cd vector-search
+git clone --depth 1 https://github.com/vespa-cloud/vector-search.git && cd vector-search
 </pre>
 
 ## Install Vespa-CLI
@@ -32,7 +32,7 @@ Replace `<tenant-name>` with your Vespa Cloud tenant name.
 In this case, the application name used is `vector-search` and instance is `default`:
 
 <pre>
-vespa config set target cloud && vespa config set application &lt;tenant-name&gt;.vector-search.default
+vespa config set target cloud && vespa config --local set application &lt;tenant-name&gt;.vector-search.default
 </pre>
 
 ## Security
