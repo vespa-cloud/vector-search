@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.-->
 <services version='1.0' xmlns:deploy="vespa" xmlns:preprocess="properties">
+
   <container id='default' version='1.0'>
-    <nodes of="vectors">
-      <jvm allocated-memory="15%"/>
-    </nodes>
+    <nodes count="2"/>
     <search/>
     <document-api/>
   </container>
@@ -16,7 +15,7 @@
     </documents>
 
     <nodes count="1" groups="1"/>
-    
+
     <nodes deploy:environment="dev" count="1" groups="1">
       <resources memory="8GB" vcpu="2" disk="50GB"/>
     </nodes>
@@ -29,19 +28,5 @@
       <resources memory="32GB" vcpu="8" disk="300GB" storage-type="local"/>
     </nodes>
 
-    <engine>
-      <proton>
-        <tuning>
-          <searchnode>
-            <requestthreads>
-              <persearch>2</persearch>
-            </requestthreads>
-            <feeding>
-              <concurrency>0.5</concurrency>
-            </feeding>
-          </searchnode>
-        </tuning>
-      </proton>
-    </engine>
   </content>
 </services>
