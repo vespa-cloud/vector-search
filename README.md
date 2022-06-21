@@ -142,17 +142,17 @@ one node per group and 2 groups for redundancy.
 
 | Vectors | Dimensionality | Precision Type | Queries per second | Writes per second | Estimated cost per month (720 hours) |
 |---------|----------------|----------------|--------------------|-------------------|--------------------------------------|
-| 5M      | 768            | float          | 2000               | 1000              | $ 1,581                              |
-| 5M      | 768            | float          | 6000               | 1000              | $ 3,162                              |
-| 10M     | 384            | float          | 2000               | 1000              | $ 1,581                              |
-| 20M     | 384            | bfloat16       | 1500               | 750               | $ 1,581                              |
+| 5M      | 768            | float          | 2000               | 1000              | $ 1,965                              |
+| 5M      | 768            | float          | 6000               | 1000              | $ 5,895                              |
+| 10M     | 384            | float          | 2000               | 1000              | $ 1,965                              |
+| 20M     | 384            | bfloat16       | 1500               | 750               | $ 1,965                              |
 
 Lower number of vector dimensions and lower precision type (e.g, `bfloat16` instead of `float`), 
 increases number of vectors which can be indexed per node (memory resource limits). Supported queries per second and
-writes per second depends on [vector search parameters](https://docs.vespa.ai/en/approximate-nn-hnsw.html).
+writes per second depends on [vector search parameters](https://docs.vespa.ai/en/approximate-nn-hnsw.html). 
 
 Vespa Cloud sizing experts can assist in finding the most cost efficient resource specification matching your vector search 
-use case. Sizing and cost estimation uses samples of your data using the `perf` environment. 
+use case. Sizing and cost estimation uses samples of your data in the `perf` environment. 
 
 Vespa Cloud also supports [auto-scaling](https://cloud.vespa.ai/en/autoscaling), in this example scaling 
 number of groups (replicas) to handle query traffic changes.
@@ -163,10 +163,9 @@ number of groups (replicas) to handle query traffic changes.
 </nodes>
 ```
 
-
 ## Using Vespa Vector Search 
 
-Documentation:
+Documentation resources:
 
 * [Practical nearest neighbor search guide](https://docs.vespa.ai/en/nearest-neighbor-search-guide.html)
 * [Nearest neighbor search](https://docs.vespa.ai/en/nearest-neighbor-search.html)
@@ -176,6 +175,7 @@ Blog posts:
 
 * [Billion-scale vector search with Vespa - part one](https://blog.vespa.ai/billion-scale-knn/)
 * [Billion-scale vector search with Vespa - part two](https://blog.vespa.ai/billion-scale-knn-part-two/)
+* [Billion-scale vector search using hybrid HNSW-IF](https://blog.vespa.ai/vespa-hybrid-billion-scale-vector-search/)
 * [Query Time Constrained Approximate Nearest Neighbor Search](https://blog.vespa.ai/constrained-approximate-nearest-neighbor-search/)
 
 Use Cases using Vespa Vector Search 
