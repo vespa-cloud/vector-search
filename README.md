@@ -3,6 +3,8 @@
 
 # Managed Vector Search using Vespa Cloud
 
+There is a growing interest in AI-powered vector representations of unstructured multimodal data and searching efficiently over these representations. This repository describes how your organization can unlock the full potential of multimodal AI-powered vector representations using Vespa Cloud -- the industry-leading managed Vector Search Service. 
+
 ## Create your tenant in the Vespa Cloud
 
 If you don't already have a Vespa Cloud tenant, 
@@ -18,14 +20,14 @@ git clone --depth 1 https://github.com/vespa-cloud/vector-search.git && cd vecto
 
 ## Install Vespa-CLI
 Install the [Vespa-CLI](https://docs.vespa.ai/en/vespa-cli.html) which is the official command-line
-client for interacting with Vespa:
+client for interacting with Vespa. Vespa-CLI works with both Vespa Cloud and self-serve on-premise Vespa deployments. 
 
 ```sh
 brew install vespa-cli 
 ```
 
 You can also download [Vespa CLI](https://github.com/vespa-engine/vespa/releases) 
-for Windows, Linux and macOS.
+binaries for Windows, Linux and macOS.
 
 ## Configure Vespa-CLI 
 Replace `<tenant-name>` with your Vespa Cloud tenant name. 
@@ -38,12 +40,12 @@ vespa config set target cloud && \
 
 ## Security
 
-Authorize access to Vespa Cloud control plane: 
+Authorize access to the Vespa Cloud control plane: 
 ```sh
 vespa auth login
 ```
 
-Create a self-signed certificate for data plane (read and write) access:
+Create a self-signed certificate for data plane (read and write) endpoint access:
 ```sh
 vespa auth cert
 ```
@@ -61,8 +63,10 @@ to match your vector data:
 * Change vector dimensionality (Default `768`)
 * Change vector precision type (Default `float`) - Choose between `int8`, `bfloat16` or `float`.
 * Change [distance-metric](https://docs.vespa.ai/en/reference/schema-reference.html#distance-metric) 
-(Default `euclidean`) - Also supported `angular`, `innerproduct` and `hamming`.
+(Default `angular` useful for models trained with *cosine* similarity) - Also supported `euclidean`, `innerproduct` and `hamming`.
 
+Note that this sample application ships with CI/CD tests for production deployment that uses 768 dimensions. Changing
+the schema requires changes of the CI/CD tests.
 
 ## Deploy to dev environment 
 Vespa Cloud supports multiple different [environments](https://cloud.vespa.ai/en/reference/environments).
@@ -71,16 +75,16 @@ The following guides you through:
 * Deploying to `perf` for performance validation and benchmarking
 * Deploying to `prod` for high availability production serving
 
-Dev zone is where development happens, resources are downscaled to nodes with 2 v-cpu, 8GB of RAM and 50 GB of disk.
-A single node `dev` deployment can index up to about 1M 768 dimensional vectors. 
+Vespa Cloud dev zone is where development happens, resources are downscaled to nodes with 2 v-cpu, 8GB of RAM and 50 GB of disk.
+A single content node `dev` deployment can index about 1M 768 dimensional vectors. 
 
 Deploy app to `dev`:
 ```sh
 vespa deploy  
 ```
 
-The first deployment to dev environment takes about 12 minutes for provisioning resources and 
-setting up certificates. 
+The very first deployment to dev environment takes about 12 minutes for provisioning resources and 
+configuring certificates. Later deployments takes less than a minute. 
 
 ## Deploy to perf environment
 
@@ -104,7 +108,7 @@ pipeline which executes:
 * Staging setup test [tests/staging-setup/staging-feed-before-upgrade.json](tests/staging-setup/staging-feed-before-upgrade.json)
 * Staging test [tests/staging-test/staging-after-upgrade.json](tests/staging-test/staging-after-upgrade.json)
 
-The above tests also demonstrates query and feed usage. 
+The above tests also demonstrates Vespa vector search query and feed usage. 
 
 Deploying to production require choosing which production region the app should be
 deployed to. The `deployment.xml` in this sample app uses [aws-us-east-1c](deployment.xml).
@@ -140,12 +144,12 @@ Above specifies a redundant high availability deployment
 using [grouped data distribution](https://docs.vespa.ai/en/performance/sizing-search.html ) with
 one node per group and 2 groups for redundancy.   
 
-| Vectors | Dimensionality | Precision Type | Queries per second | Writes per second | Estimated cost per month (720 hours) |
-|---------|----------------|----------------|--------------------|-------------------|--------------------------------------|
-| 5M      | 768            | float          | 2000               | 1000              | $ 1,965                              |
-| 5M      | 768            | float          | 6000               | 1000              | $ 5,895                              |
-| 10M     | 384            | float          | 2000               | 1000              | $ 1,965                              |
-| 20M     | 384            | bfloat16       | 1500               | 750               | $ 1,965                              |
+| Vectors | Dimensionality | Precision Type | Queries per second | Writes per second | Estimated cost per hour ($)         |
+|---------|----------------|----------------|--------------------|-------------------|-------------------------------------|
+| 5M      | 768            | float          | 2000               | 1000              | $ 3.36                              |
+| 5M      | 768            | float          | 6000               | 1000              | $ 10.08                             |
+| 10M     | 384            | float          | 2000               | 1000              | $ 3.36                              |
+| 20M     | 384            | bfloat16       | 1500               | 750               | $ 3.36                              |
 
 Lower number of vector dimensions and lower precision type (e.g, `bfloat16` instead of `float`), 
 increases number of vectors which can be indexed per node (memory resource limits). Supported queries per second and
@@ -154,14 +158,8 @@ writes per second depends on [vector search parameters](https://docs.vespa.ai/en
 Vespa Cloud sizing experts can assist in finding the most cost efficient resource specification matching your vector search 
 use case. Sizing and cost estimation uses samples of your data in the `perf` environment. 
 
-Vespa Cloud also supports [auto-scaling](https://cloud.vespa.ai/en/autoscaling), in this example scaling 
-number of groups (replicas) to handle query traffic changes.
-
-```xml
-<nodes deploy:environment="prod" count="[2,4]" groups="[2,4]">
-      <resources memory="512GB" vcpu="64" disk="2400GB" storage-type="local" />
-</nodes>
-```
+Vespa Cloud also supports [auto-scaling](https://cloud.vespa.ai/en/autoscaling) which lowers the cost of deployment
+as resources can be scaled with query volume changes throughout the week. 
 
 ## Using Vespa Vector Search 
 
