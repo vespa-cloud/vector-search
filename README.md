@@ -60,12 +60,12 @@ is configured with `768` dimensions using `float` precision.
 The [vector schema](schemas/vector.sd) could be changed before deploying 
 to match your vector data:
 
-* Change vector dimensionality (Default `768`).
+* Change vector dimensionality (default `768`).
 * Change vector [precision type](https://docs.vespa.ai/en/reference/tensor.html#tensor-type-spec)
-  (Default `float`) - Choose between `int8`, `bfloat16`, `float` or `double`.
+  (default `float`) - choose between `int8`, `bfloat16`, `float` or `double`.
 * Change [distance-metric](https://docs.vespa.ai/en/reference/schema-reference.html#distance-metric)
-  (Default `angular` useful for models trained with *cosine* similarity) -
-  Also supported `euclidean`, `innerproduct` and `hamming`.
+  (default `angular` useful for models trained with *cosine* similarity) -
+  also supported `euclidean`, `innerproduct` and `hamming`.
 
 Note that this sample application ships with CI/CD tests for production deployment that uses 768 dimensions. Changing
 the schema requires changes of the CI/CD tests.
@@ -184,3 +184,30 @@ Use Cases using Vespa Vector Search
 * [State-of-the-art image search](https://github.com/vespa-engine/sample-apps/tree/master/text-image-search)
 * [State-of-the-art open domain question answering](https://github.com/vespa-engine/sample-apps/tree/master/dense-passage-retrieval-with-ann)
 * [Spotify using Vespa vector search](https://engineering.atspotify.com/2022/03/introducing-natural-language-search-for-podcast-episodes/)
+
+
+## Feeding example
+[feed.py](feed.py) is a simple script to generate test documents based on the [schema](schemas/vector.sd).
+Use this as a template for feeding your own test data.
+
+Use the [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for high-throughput feed - get it:
+
+```
+$ F_REPO="https://repo1.maven.org/maven2/com/yahoo/vespa/vespa-feed-client-cli" && \
+  F_VER=$(curl -Ss "${F_REPO}/maven-metadata.xml" | sed -n 's/.*<release>\(.*\)<.*>/\1/p') && \
+  curl -SsLo vespa-feed-client-cli.zip ${F_REPO}/${F_VER}/vespa-feed-client-cli-${F_VER}-zip.zip && \
+  unzip -o vespa-feed-client-cli.zip
+```
+
+Example feed using `feed.py` to generate test documents:
+
+```
+$ ./vespa-feed-client-cli/vespa-feed-client  \
+  --show-errors \
+  --certificate ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+  --private-key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+  --file <(python3 feed.py 20 768) \
+  --endpoint https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud
+```
+
+See [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for troubleshooting.
