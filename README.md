@@ -60,10 +60,12 @@ is configured with `768` dimensions using `float` precision.
 The [vector schema](schemas/vector.sd) could be changed before deploying 
 to match your vector data:
 
-* Change vector dimensionality (Default `768`)
-* Change vector precision type (Default `float`) - Choose between `int8`, `bfloat16` or `float`.
-* Change [distance-metric](https://docs.vespa.ai/en/reference/schema-reference.html#distance-metric) 
-(Default `angular` useful for models trained with *cosine* similarity) - Also supported `euclidean`, `innerproduct` and `hamming`.
+* Change vector dimensionality (Default `768`).
+* Change vector [precision type](https://docs.vespa.ai/en/reference/tensor.html#tensor-type-spec)
+  (Default `float`) - Choose between `int8`, `bfloat16`, `float` or `double`.
+* Change [distance-metric](https://docs.vespa.ai/en/reference/schema-reference.html#distance-metric)
+  (Default `angular` useful for models trained with *cosine* similarity) -
+  Also supported `euclidean`, `innerproduct` and `hamming`.
 
 Note that this sample application ships with CI/CD tests for production deployment that uses 768 dimensions. Changing
 the schema requires changes of the CI/CD tests.
