@@ -15,7 +15,7 @@ no credit card required.
 
 ## Clone this repo 
 ```sh
-git clone --depth 1 https://github.com/vespa-cloud/vector-search.git && cd vector-search
+$ git clone --depth 1 https://github.com/vespa-cloud/vector-search.git && cd vector-search
 ```
 
 ## Install Vespa-CLI
@@ -23,7 +23,7 @@ Install the [Vespa-CLI](https://docs.vespa.ai/en/vespa-cli.html) which is the of
 client for interacting with Vespa. Vespa-CLI works with both Vespa Cloud and self-serve on-premise Vespa deployments. 
 
 ```sh
-brew install vespa-cli 
+$ brew install vespa-cli
 ```
 
 You can also download [Vespa CLI](https://github.com/vespa-engine/vespa/releases) 
@@ -34,20 +34,20 @@ Replace `<tenant-name>` with your Vespa Cloud tenant name.
 In this case, the application name used is `vector-search` and instance is `default`:
 
 ```sh
-vespa config set target cloud && \
- vespa config set --local application <tenant-name>.vector-search.default
+$ vespa config set target cloud && \
+  vespa config set --local application <tenant-name>.vector-search.default
 ```
 
 ## Security
 
 Authorize access to the Vespa Cloud control plane: 
 ```sh
-vespa auth login
+$ vespa auth login
 ```
 
 Create a self-signed certificate for data plane (read and write) endpoint access:
 ```sh
-vespa auth cert
+$ vespa auth cert
 ```
 
 Read more about how Vespa Cloud keeps your data safe and private at rest and in transit 
@@ -82,7 +82,7 @@ A single content node `dev` deployment can index about 1M 768 dimensional vector
 
 Deploy app to `dev`:
 ```sh
-vespa deploy  
+$ vespa deploy
 ```
 
 The very first deployment to dev environment takes about 12 minutes for provisioning resources and 
@@ -97,7 +97,7 @@ for redundancy.
 Deploy app to `perf` by using the `--zone` parameter:
 
 ```sh
-vespa deploy --zone perf.aws-us-east-1c
+$ vespa deploy --zone perf.aws-us-east-1c
 ```
 
 
@@ -125,7 +125,7 @@ Request for new regions can be made by sending an email to [support@vespa.ai](ma
 
 The following deploys the application to the production regions specified in [deployment.xml](deployment.xml):
 ```sh
-vespa prod submit 
+$ vespa prod submit
 ```
 
 We recommend deploying using CI/CD, for example deploying to Vespa Cloud using GitHub Actions.  
@@ -192,7 +192,7 @@ Use this as a template for feeding your own test data.
 
 Use the [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for high-throughput feed - get it:
 
-```
+```sh
 $ F_REPO="https://repo1.maven.org/maven2/com/yahoo/vespa/vespa-feed-client-cli" && \
   F_VER=$(curl -Ss "${F_REPO}/maven-metadata.xml" | sed -n 's/.*<release>\(.*\)<.*>/\1/p') && \
   curl -SsLo vespa-feed-client-cli.zip ${F_REPO}/${F_VER}/vespa-feed-client-cli-${F_VER}-zip.zip && \
@@ -201,7 +201,7 @@ $ F_REPO="https://repo1.maven.org/maven2/com/yahoo/vespa/vespa-feed-client-cli" 
 
 Example feed using `feed.py` to generate test documents:
 
-```
+```sh
 $ ./vespa-feed-client-cli/vespa-feed-client  \
   --show-errors \
   --certificate ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
