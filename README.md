@@ -186,6 +186,42 @@ Use Cases using Vespa Vector Search
 * [Spotify using Vespa vector search](https://engineering.atspotify.com/2022/03/introducing-natural-language-search-for-podcast-episodes/)
 
 
+## Endpoint testing
+In the [security](#security) section above,
+the `vespa auth cert` command downloads data-plane credentials:
+
+```sh
+$ vespa auth cert
+Success: Certificate written to security/clients.pem
+Success: Certificate written to ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem
+Success: Private key written to ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem
+```
+
+This is the certificate/key-pair used when feeding and querying documents.
+The endpoint is found in the console and used in the commands below.
+
+Before feeding or running queries, one can easily check the endpoint:
+
+```sh
+$ curl --verbose \
+  --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+  --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+  https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/
+```
+
+Expect output like:
+
+```json
+{
+  "handlers" : [ {
+    "id" : "com.yahoo.container.usability.BindingsOverviewHandler",
+    "class" : "com.yahoo.container.usability.BindingsOverviewHandler",
+    "bundle" : "container-disc:8.89.6",
+    "serverBindings" : [ "http://*/" ]
+  } ...
+```
+
+
 ## Feeding example
 [feed.py](feed.py) is a simple script to generate test documents based on the [schema](schemas/vector.sd).
 Use this as a template for feeding your own test data.
@@ -211,3 +247,33 @@ $ ./vespa-feed-client-cli/vespa-feed-client  \
 ```
 
 See [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for troubleshooting.
+
+
+## Query example
+Test the query API by querying for all documents - examples:
+
+```sh
+$ vespa query "select * from vector where true"
+```
+
+```sh
+$ curl \
+  --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+  --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+  https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/?yql="select+*+from+vector+where+true"
+```
+
+```sh
+$ curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+  --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+  --data '
+  {
+      "yql": "select * from vector where true"
+  }' \
+  https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/
+```
+
+See [Using Vespa Vector Search](#using-vespa-vector-search) for ANN queries.
