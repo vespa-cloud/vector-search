@@ -13,9 +13,7 @@ def generate_documents(num_docs, tensor_size):
             "fields": {
                 "id": n,
                 "tags": ["tag1", "tag2"],
-                "vector": {
-                    "values": [random.random() for i in range(tensor_size)]
-                }
+                "vector": [random.random() for i in range(tensor_size)] 
             }
         })
     return json.dumps(docs, indent=2)

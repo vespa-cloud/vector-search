@@ -15,7 +15,7 @@ no credit card required.
 
 ## Clone this repo 
 ```sh
-$ git clone --depth 1 https://github.com/vespa-cloud/vector-search.git && cd vector-search
+git clone --depth 1 https://github.com/vespa-cloud/vector-search.git && cd vector-search
 ```
 
 ## Install Vespa-CLI
@@ -23,7 +23,7 @@ Install the [Vespa-CLI](https://docs.vespa.ai/en/vespa-cli.html) which is the of
 client for interacting with Vespa. Vespa-CLI works with both Vespa Cloud and self-serve on-premise Vespa deployments. 
 
 ```sh
-$ brew install vespa-cli
+brew install vespa-cli
 ```
 
 You can also download [Vespa CLI](https://github.com/vespa-engine/vespa/releases) 
@@ -34,20 +34,20 @@ Replace `<tenant-name>` with your Vespa Cloud tenant name.
 In this case, the application name used is `vector-search` and instance is `default`:
 
 ```sh
-$ vespa config set target cloud && \
-  vespa config set --local application <tenant-name>.vector-search.default
+vespa config set target cloud && \
+vespa config set --local application <tenant-name>.vector-search.default
 ```
 
 ## Security
 
 Authorize access to the Vespa Cloud control plane: 
 ```sh
-$ vespa auth login
+vespa auth login
 ```
 
 Create a self-signed certificate for data plane (read and write) endpoint access:
 ```sh
-$ vespa auth cert
+vespa auth cert
 ```
 
 Read more about how Vespa Cloud keeps your data safe and private at rest and in transit 
@@ -82,11 +82,11 @@ A single content node `dev` deployment can index about 1M 768 dimensional vector
 
 Deploy app to `dev`:
 ```sh
-$ vespa deploy
+vespa deploy
 ```
 
 The very first deployment to dev environment takes about 12 minutes for provisioning resources and 
-configuring certificates. Later deployments takes less than a minute. 
+signing endpoint certificates. Later deployments takes less than a minute. 
 
 ## Deploy to perf environment
 
@@ -97,9 +97,8 @@ for redundancy.
 Deploy app to `perf` by using the `--zone` parameter:
 
 ```sh
-$ vespa deploy --zone perf.aws-us-east-1c
+vespa deploy --zone perf.aws-us-east-1c
 ```
-
 
 ## Deploy to production environment
 
@@ -112,8 +111,8 @@ pipeline which executes:
 
 The above tests also demonstrates Vespa vector search query and feed usage. 
 
-Deploying to production require choosing which production region the app should be
-deployed to. The `deployment.xml` in this sample app uses [aws-us-east-1c](deployment.xml).
+Deploying to production require choosing which [production regions](https://cloud.vespa.ai/en/reference/zones.html) 
+the app should be deployed to. The `deployment.xml` in this sample app uses [aws-us-east-1c](deployment.xml).
 
 For high availability and low network latency, consider using multiple regions. Vespa Cloud
 supports global query traffic routing so that query requests are served by the region which is
@@ -125,7 +124,7 @@ Request for new regions can be made by sending an email to [support@vespa.ai](ma
 
 The following deploys the application to the production regions specified in [deployment.xml](deployment.xml):
 ```sh
-$ vespa prod submit
+vespa prod submit
 ```
 
 We recommend deploying using CI/CD, for example deploying to Vespa Cloud using GitHub Actions.  
@@ -163,35 +162,12 @@ use case. Sizing and cost estimation uses samples of your data in the `perf` env
 Vespa Cloud also supports [auto-scaling](https://cloud.vespa.ai/en/autoscaling) which lowers the cost of deployment
 as resources can be scaled with query volume changes throughout the week. 
 
-## Using Vespa Vector Search 
-
-Documentation resources:
-
-* [Practical nearest neighbor search guide](https://docs.vespa.ai/en/nearest-neighbor-search-guide.html)
-* [Nearest neighbor search](https://docs.vespa.ai/en/nearest-neighbor-search.html)
-* [Approximate nearest neighbor search](https://docs.vespa.ai/en/approximate-nn-hnsw.html)
-
-Blog posts: 
-
-* [Billion-scale vector search with Vespa - part one](https://blog.vespa.ai/billion-scale-knn/)
-* [Billion-scale vector search with Vespa - part two](https://blog.vespa.ai/billion-scale-knn-part-two/)
-* [Billion-scale vector search using hybrid HNSW-IF](https://blog.vespa.ai/vespa-hybrid-billion-scale-vector-search/)
-* [Query Time Constrained Approximate Nearest Neighbor Search](https://blog.vespa.ai/constrained-approximate-nearest-neighbor-search/)
-
-Use Cases using Vespa Vector Search 
-
-* [State-of-the-art text ranking](https://github.com/vespa-engine/sample-apps/blob/master/msmarco-ranking/passage-ranking.md)
-* [State-of-the-art image search](https://github.com/vespa-engine/sample-apps/tree/master/text-image-search)
-* [State-of-the-art open domain question answering](https://github.com/vespa-engine/sample-apps/tree/master/dense-passage-retrieval-with-ann)
-* [Spotify using Vespa vector search](https://engineering.atspotify.com/2022/03/introducing-natural-language-search-for-podcast-episodes/)
-
-
-## Endpoint testing
+## Vespa Cloud endpoint testing
 In the [security](#security) section above,
 the `vespa auth cert` command downloads data-plane credentials:
 
 ```sh
-$ vespa auth cert
+vespa auth cert
 Success: Certificate written to security/clients.pem
 Success: Certificate written to ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem
 Success: Private key written to ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem
@@ -203,13 +179,13 @@ The endpoint is found in the console and used in the commands below.
 Before feeding or running queries, one can easily check the endpoint:
 
 ```sh
-$ curl --verbose \
+curl --verbose \
   --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
   --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
   https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/
 ```
 
-Expect output like:
+Expect a 200 OK with output like:
 
 ```json
 {
@@ -221,59 +197,188 @@ Expect output like:
   } ...
 ```
 
+Or simply use the vespa cli:  
+```sh
+vespa status query 
+```
+
+```sh
+Container (query API) at https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/ is ready
+```
+
 
 ## Feeding example
 [feed.py](feed.py) is a simple script to generate test documents based on the [schema](schemas/vector.sd).
-Use this as a template for feeding your own test data.
+Use this as a template for feeding your own vector data.
 
-Use the [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for high-throughput feed - get it:
+Use the [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for 
+high-throughput feed - get it:
 
 ```sh
-$ F_REPO="https://repo1.maven.org/maven2/com/yahoo/vespa/vespa-feed-client-cli" && \
-  F_VER=$(curl -Ss "${F_REPO}/maven-metadata.xml" | sed -n 's/.*<release>\(.*\)<.*>/\1/p') && \
-  curl -SsLo vespa-feed-client-cli.zip ${F_REPO}/${F_VER}/vespa-feed-client-cli-${F_VER}-zip.zip && \
-  unzip -o vespa-feed-client-cli.zip
+F_REPO="https://repo1.maven.org/maven2/com/yahoo/vespa/vespa-feed-client-cli" && \
+F_VER=$(curl -Ss "${F_REPO}/maven-metadata.xml" | sed -n 's/.*<release>\(.*\)<.*>/\1/p') && \
+curl -SsLo vespa-feed-client-cli.zip ${F_REPO}/${F_VER}/vespa-feed-client-cli-${F_VER}-zip.zip && \
+unzip -o vespa-feed-client-cli.zip
 ```
 
-Example feed using `feed.py` to generate test documents:
+Example feed using `feed.py` to generate 20K test vectors with 768 dimensions:
 
 ```sh
-$ ./vespa-feed-client-cli/vespa-feed-client  \
-  --show-errors \
-  --certificate ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
-  --private-key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
-  --file <(python3 feed.py 20 768) \
-  --endpoint https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud
+./vespa-feed-client-cli/vespa-feed-client  \
+ --show-errors \
+ --certificate ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+ --private-key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+ --file <(python3 feed.py 20000 768) \
+ --endpoint https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud
 ```
 
 See [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for troubleshooting.
 
+## Query examples 
 
-## Query example
 Test the query API by querying for all documents - examples:
 
+### Using the Vespa CLI
 ```sh
-$ vespa query "select * from vector where true"
+vespa query 'yql=select * from vectors where true' \
+'ranking=unranked' \
+'hits=1'
 ```
+Using the configured `all` [document-summary](https://docs.vespa.ai/en/document-summaries.html),
+which also returns the `vector` data, this is slower as more data is returned:
 
 ```sh
-$ curl \
-  --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
-  --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
-  https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/?yql="select+*+from+vector+where+true"
+vespa query 'yql=select * from vectors where true' \
+'ranking=unranked' \
+'hits=1' \
+'summary=all'
 ```
 
+Same query, but with [different rendering](https://docs.vespa.ai/en/reference/query-api-reference.html#presentation) 
+of the `vector` tensor field:
+
 ```sh
-$ curl \
-  -X POST \
-  -H "Content-Type: application/json" \
-  --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
-  --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
-  --data '
+vespa query 'yql=select * from vectors where true' \
+'ranking=unranked' \
+'hits=1' \
+'summary=all' \
+'presentation.format.tensors=short-value'
+```
+Use `vespa query -v` to print the `curl` equivalent.
+
+### Using HTTP GET 
+Using GET, the request parameters must be url encoded. Here space is replaced with `+`:
+
+```sh
+curl \
+ --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+ --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+ https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/?yql=select+*+from+vector+where+true
+```
+### Using HTTP POST 
+```sh
+ curl \
+ --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+ --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+ --json '
   {
-      "yql": "select * from vector where true"
+   "yql": "select * from vectors where true",
+   "ranking": "unranked",
+   "hits":1
   }' \
   https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/
 ```
 
-See [Using Vespa Vector Search](#using-vespa-vector-search) for ANN queries.
+Using `POST` is recommended for large request payloads. 
+
+### Nearest neighbor queries
+Approximate nearest neighbor search search, asking for ten nearest neighbors `{targetHits:10}`:
+```sh
+query=$(cat query-vector.json) && \
+curl \
+ --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+ --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+ --json "
+  {
+   'yql': 'select * from vectors where {targetHits:10}nearestNeighbor(vector, q)',
+   input.query(q)': '$query' 
+  }" \
+ https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/
+ ```
+
+Exact nearest neighbor search search, asking for ten nearest neighbors:
+```sh
+query=$(cat query-vector.json) && \
+curl \
+ --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+ --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+ --json "
+  {
+   'yql': 'select * from vectors where {targetHits:10,approximate:false}nearestNeighbor(vector, q)',
+   input.query(q)': '$query' 
+  }" \
+ https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/
+ ```
+
+Approximate nearest neighbor search combined with a filter on tags: 
+```sh
+query=$(cat query-vector.json) && \
+curl \
+ --cert ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
+ --key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
+ --json "
+  {
+   'yql': 'select * from vectors where {targetHits:10}nearestNeighbor(vector, q) and tags contains \"tag1\"',
+   input.query(q)': '$query' 
+  }" \
+ https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/
+ ```
+
+See also [using Vespa Vector Search](#using-vespa-vector-search) for nearest neighbor search queries.
+
+## Visit and exporting the data
+Getting the vector data out of Vespa can be equally important as getting the vector data in, especially
+when using [native embedders](https://blog.vespa.ai/text-embedding-made-simple/) that embeds text
+into vector representation(s). Use the [Vespa visit](https://docs.vespa.ai/en/content/visiting.html)
+functionality to export data. 
+
+```sh
+vespa visit --field-set vector:vector,id > ../vector-data.jsonl 
+```
+Will export all documents from the `vector` schema with only the `vector` and `id` field. 
+Using `[all]` which exports both both schema and derived fields: 
+
+```sh
+vespa visit --field-set "[all]" > ../vector-data.jsonl 
+```
+
+Using [document selection](https://docs.vespa.ai/en/reference/document-select-language.html)
+to limit what is returned. Note that the Vespa selection is not evaluated using index data structures
+and is a linear scan operation. 
+
+```sh
+vespa visit --field-set "vector:vector" \
+--selection "vector.tags != null" > ../vector-data.jsonl
+```
+
+## Documentation resources:
+
+### Documentation 
+
+* [Practical nearest neighbor search guide](https://docs.vespa.ai/en/nearest-neighbor-search-guide.html)
+* [Nearest neighbor search](https://docs.vespa.ai/en/nearest-neighbor-search.html)
+* [Approximate nearest neighbor search](https://docs.vespa.ai/en/approximate-nn-hnsw.html)
+
+### Blog posts: 
+* [Query Time Constrained Approximate Nearest Neighbor Search](https://blog.vespa.ai/constrained-approximate-nearest-neighbor-search/)
+* [Billion-scale vector search with Vespa - part one](https://blog.vespa.ai/billion-scale-knn/)
+* [Billion-scale vector search with Vespa - part two](https://blog.vespa.ai/billion-scale-knn-part-two/)
+* [Billion-scale vector search using hybrid HNSW-IF](https://blog.vespa.ai/vespa-hybrid-billion-scale-vector-search/)
+
+
+## Use Cases using Vespa Vector Search 
+
+* [State-of-the-art text ranking](https://github.com/vespa-engine/sample-apps/blob/master/msmarco-ranking/passage-ranking.md)
+* [State-of-the-art image search](https://github.com/vespa-engine/sample-apps/tree/master/text-image-search)
+* [State-of-the-art open domain question answering](https://github.com/vespa-engine/sample-apps/tree/master/dense-passage-retrieval-with-ann)
+* [Spotify using Vespa vector search](https://engineering.atspotify.com/2022/03/introducing-natural-language-search-for-podcast-episodes/)
