@@ -39,9 +39,8 @@ schema vector {
       query(q) tensor<float>(d[768])
     } 
     first-phase {
-      expression: closeness(field, vector)
+      expression: cos(closeness(field, vector))
     }
-    match-features: distance(field, vector) 
   }
 
 } 
