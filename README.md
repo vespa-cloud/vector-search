@@ -102,7 +102,7 @@ vespa deploy --zone perf.aws-us-east-1c
 
 ## Deploy to production environment
 
-This submits the application to production via [automated deployment](https://cloud.vespa.ai/en/automated-deployments) 
+This deploys the application to production via [automated deployment](https://cloud.vespa.ai/en/automated-deployments) 
 pipeline which executes:
 
 * System test [tests/system-test/feed-and-search-test.json](tests/system-test/feed-and-search-test.json)
@@ -124,7 +124,7 @@ Request for new regions can be made by sending an email to [support@vespa.ai](ma
 
 The following deploys the application to the production regions specified in [deployment.xml](deployment.xml):
 ```sh
-vespa prod submit
+vespa prod deploy
 ```
 
 We recommend deploying using CI/CD, for example deploying to Vespa Cloud using GitHub Actions.  
