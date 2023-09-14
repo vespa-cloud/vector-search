@@ -127,7 +127,9 @@ The following deploys the application to the production regions specified in [de
 vespa prod deploy
 ```
 
-We recommend deploying using CI/CD, for example deploying to Vespa Cloud using GitHub Actions.  
+Refer to [Production Deployment](https://cloud.vespa.ai/en/production-deployment)
+to deploy to the production environment with CI/CD.
+
 
 ## Vespa Cloud - Vector Search Price Examples
 
@@ -208,31 +210,14 @@ Container (query API) at https://vector-search.<tenant-name>.aws-us-east-1c.dev.
 
 
 ## Feeding example
-[feed.py](feed.py) is a simple script to generate test documents based on the [schema](schemas/vector.sd).
+[feed.py](feed.py) is a script to generate test documents based on the [schema](schemas/vector.sd).
 Use this as a template for feeding your own vector data.
-
-Use the [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for 
-high-throughput feed - get it:
-
-```sh
-F_REPO="https://repo1.maven.org/maven2/com/yahoo/vespa/vespa-feed-client-cli" && \
-F_VER=$(curl -Ss "${F_REPO}/maven-metadata.xml" | sed -n 's/.*<release>\(.*\)<.*>/\1/p') && \
-curl -SsLo vespa-feed-client-cli.zip ${F_REPO}/${F_VER}/vespa-feed-client-cli-${F_VER}-zip.zip && \
-unzip -o vespa-feed-client-cli.zip
-```
-
 Example feed using `feed.py` to generate 20K test vectors with 768 dimensions:
 
-```sh
-./vespa-feed-client-cli/vespa-feed-client  \
- --show-errors \
- --certificate ~/.vespa/<tenant-name>.vector-search.default/data-plane-public-cert.pem \
- --private-key ~/.vespa/<tenant-name>.vector-search.default/data-plane-private-key.pem \
- --file <(python3 feed.py 20000 768) \
- --endpoint https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud
+```
+vespa feed <(python3 feed.py 20000 768)
 ```
 
-See [vespa-feed-client](https://docs.vespa.ai/en/vespa-feed-client.html) for troubleshooting.
 
 ## Query examples 
 
