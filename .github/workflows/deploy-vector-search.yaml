@@ -12,6 +12,11 @@ on:
     # 5:40 UTC daily
     - cron: '40 5 * * *'
 
+# See https://cloud.vespa.ai/en/security/guide#application-key for how to generate a key:
+#
+#   vespa auth api-key -a vespa-team.vector-search.default
+#
+# Then use key in ~/.vespa/vespa-team.api-key.pem, add its content into a GitHub Secret
 env:
   VESPA_TEAM_API_KEY: ${{ secrets.VESPA_TEAM_VESPACLOUD_VECTOR_SEARCH_API_KEY }}
 
