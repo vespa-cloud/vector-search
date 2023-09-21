@@ -16,7 +16,7 @@ on:
 #
 # Then use key in ~/.vespa/vespa-team.api-key.pem, add its content into a GitHub Secret.
 env:
-  VESPA_TEAM_API_KEY: ${{ secrets.VESPA_TEAM_VESPACLOUD_VECTOR_SEARCH_API_KEY }}
+  VESPA_CLI_API_KEY: ${{ secrets.VESPA_TEAM_VESPACLOUD_VECTOR_SEARCH_API_KEY }}
 
 jobs:
   deploy:
@@ -40,6 +40,5 @@ jobs:
       run: |
         ./vespa config set target cloud
         ./vespa config set application vespa-team.vector-search
-        export VESPA_CLI_API_KEY="${VESPA_TEAM_API_KEY}"
         ./vespa prod deploy \
           --source-url "$(git config --get remote.origin.url | sed 's+git@\(.*\):\(.*\)\.git+https://\1/\2+')/commit/$(git rev-parse HEAD)"
