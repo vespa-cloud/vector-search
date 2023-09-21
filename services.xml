@@ -9,12 +9,12 @@
   </container>
 
   <content id='vectors' version='1.0'>
-    <redundancy>1</redundancy>
+    <redundancy>2</redundancy>
     <documents>
       <document mode='index' type='vector'/>
     </documents>
 
-    <nodes count="1" groups="1"/>
+    <nodes count="2" groups="2"/>
 
     <nodes deploy:environment="dev" count="1" groups="1">
       <resources memory="8GB" vcpu="2" disk="50GB"/>
