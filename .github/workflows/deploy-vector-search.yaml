@@ -1,22 +1,20 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-
-# See https://cloud.vespa.ai/en/automated-deployments for details
-# VESPA_TEAM_VESPACLOUD_DOCSEARCH_API_KEY is an organization secret -
-# this is used to deploy applications to Vespa Cloud
+#
+# See https://cloud.vespa.ai/en/automated-deployments for details.
 
 name: Deploy vector-search to Vespa Cloud
 on:
   push:
     branches: [ main ]
   schedule:
-    # 5:40 UTC daily
+    # 5:40 UTC daily 
     - cron: '40 5 * * *'
 
-# See https://cloud.vespa.ai/en/security/guide#application-key for how to generate a key:
+# See https://cloud.vespa.ai/en/security/guide#application-key for how to generate a control-plane key:
 #
 #   vespa auth api-key -a vespa-team.vector-search.default
 #
-# Then use key in ~/.vespa/vespa-team.api-key.pem, add its content into a GitHub Secret
+# Then use key in ~/.vespa/vespa-team.api-key.pem, add its content into a GitHub Secret.
 env:
   VESPA_TEAM_API_KEY: ${{ secrets.VESPA_TEAM_VESPACLOUD_VECTOR_SEARCH_API_KEY }}
 
