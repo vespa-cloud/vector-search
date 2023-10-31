@@ -286,7 +286,7 @@ curl \
  --json "
   {
    'yql': 'select * from vectors where {targetHits:10}nearestNeighbor(vector, q)',
-   input.query(q)': '$query' 
+   'input.query(q)': '$query' 
   }" \
  https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/
  ```
@@ -300,7 +300,7 @@ curl \
  --json "
   {
    'yql': 'select * from vectors where {targetHits:10,approximate:false}nearestNeighbor(vector, q)',
-   input.query(q)': '$query' 
+   'input.query(q)': '$query' 
   }" \
  https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/
  ```
@@ -314,7 +314,7 @@ curl \
  --json "
   {
    'yql': 'select * from vectors where {targetHits:10}nearestNeighbor(vector, q) and tags contains \"tag1\"',
-   input.query(q)': '$query' 
+   'input.query(q)': '$query' 
   }" \
  https://vector-search.<tenant-name>.aws-us-east-1c.dev.z.vespa-app.cloud/search/
  ```
