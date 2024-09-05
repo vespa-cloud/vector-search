@@ -14,7 +14,8 @@
                 "uri": "/search/",
                 "body": "../vector-query.json",
                 "parameters": {
-                    "yql": "select * from vector where tags contains \"foo:bar\""
+                    "yql": "select * from vector where tags contains \"foo:bar\"",
+                    "trace.level": "3"
                 }
             },
             "response": {
