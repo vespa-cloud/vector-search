@@ -24,14 +24,14 @@ schema vector {
   }
 
   document-summary mini {
-    summary id type string {source:id}  
-    summary tags type array<string> { source: tags }  
+    summary id {}  
+    summary tags {}  
   }
 
   document-summary all {
-    summary id type string {source:id}  
-    summary tags type array<string> { source: tags } 
-    summary vector type tensor<float>(d[768]) { source: vector }
+    summary id {}  
+    summary tags {} 
+    summary vector {}
   }
 
   rank-profile default {
@@ -39,7 +39,7 @@ schema vector {
       query(q) tensor<float>(d[768])
     } 
     first-phase {
-      expression: cos(closeness(field, vector))
+      expression: cos(distance(field, vector))
     }
   }
 
