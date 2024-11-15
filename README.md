@@ -367,7 +367,7 @@ vespa visit --field-set "vector:vector" \
 
 ## Use Cases using Vespa Vector Search 
 
-* [State-of-the-art text ranking](https://github.com/vespa-engine/sample-apps/blob/master/msmarco-ranking/passage-ranking.md)
+* [State-of-the-art text ranking](https://github.com/vespa-engine/sample-apps/tree/master/msmarco-ranking)
 * [State-of-the-art image search](https://github.com/vespa-engine/sample-apps/tree/master/text-image-search)
-* [State-of-the-art open domain question answering](https://github.com/vespa-engine/sample-apps/tree/master/dense-passage-retrieval-with-ann)
+* [State-of-the-art open domain question answering](https://github.com/vespa-engine/sample-apps/tree/master/retrieval-augmented-generation)
 * [Spotify using Vespa vector search](https://engineering.atspotify.com/2022/03/introducing-natural-language-search-for-podcast-episodes/)
