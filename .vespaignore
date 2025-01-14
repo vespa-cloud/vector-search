@@ -1,0 +1,10 @@
+# no hidden files and git specifics
+.DS_Store
+.git/
+.github/
+
+# Skip sources and text files
+README.md
+
+# Scripts, not part of the app.
+*.py
