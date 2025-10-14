@@ -4,11 +4,12 @@
 
 name: Deploy vector-search to Vespa Cloud
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
-  schedule:
-    # 5:40 UTC daily 
-    - cron: '40 5 * * *'
+  #schedule:
+  #   5:40 UTC daily 
+  #   - cron: '40 5 * * *'
 
 # See https://cloud.vespa.ai/en/security/guide#application-key for how to generate a control-plane key:
 #
