@@ -3,6 +3,8 @@
     <parallel>
       <region>aws-us-east-1c</region>
       <region>aws-use1-az4</region>
+    </parallel>
+    <parallel>
       <region>aws-use2-az1</region>
       <region>aws-use2-az3</region>
   </parallel>
