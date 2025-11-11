@@ -5,8 +5,8 @@
 name: Deploy vector-search to Vespa Cloud
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
   #schedule:
   #   5:40 UTC daily 
   #   - cron: '40 5 * * *'
